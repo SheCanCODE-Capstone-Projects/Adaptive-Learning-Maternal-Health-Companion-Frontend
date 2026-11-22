@@ -16,8 +16,8 @@ function Header() {
         </button>
 
         <button className="profile-button">
-          <span className="profile-avatar">RW</span>
-          <span>Ruth</span>
+          <span className="profile-avatar"></span>
+          <span></span>
           <i className="fa-solid fa-chevron-down"></i>
         </button>
       </div>
