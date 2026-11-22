@@ -4,13 +4,16 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import heroImg from "../assets/hero.png";
 
-function Dashboard() {
+function Dashboard({ onOpenNotifications, onLogout }) {
   return (
     <div className="dashboard-layout">
       <Sidebar />
 
       <main className="dashboard-main">
-        <Header />
+        <Header
+  onOpenNotifications={onOpenNotifications}
+  onLogout={onLogout}
+/>
 
         {/* Pregnancy Stage Banner */}
         <section className="pregnancy-banner">
