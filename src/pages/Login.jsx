@@ -2,7 +2,7 @@
 import { useState } from "react";
 import "./Login.css";
 
-function Login({ onLogin }) {
+function Login({ onLogin, onOpenForgotPassword }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -82,7 +82,15 @@ function Login({ onLogin }) {
                 Remember me
               </label>
 
-              <a href="#forgot-password">Forgot password?</a>
+              <a
+  href="#forgot-password"
+  onClick={(e) => {
+    e.preventDefault();
+    onOpenForgotPassword();
+  }}
+>
+  Forgot password?
+</a>
             </div>
 
             <button type="submit" className="login-button">
@@ -91,12 +99,20 @@ function Login({ onLogin }) {
             </button>
           </form>
 
-          <div className="login-footer">
-            <p>
-              Don't have an account?
-              <a href="#create-account"> Create account</a>
-            </p>
-          </div>
+         <div className="login-footer">
+  <p>
+    Don't have an account?
+    <a
+      href="#create-account"
+      onClick={(e) => {
+        e.preventDefault();
+        onOpenCreateAccount();
+      }}
+    >
+      {" "}Create account
+    </a>
+  </p>
+</div>
         </div>
 
         <p className="login-bottom-text">
