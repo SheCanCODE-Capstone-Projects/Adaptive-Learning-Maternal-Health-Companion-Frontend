@@ -1,5 +1,8 @@
 
-/* MAIN COLORS */
+/* ========================================
+   MAIN COLORS
+======================================== */
+
 :root {
   --beige: #F3E9DC;
   --cream: #FFFCF8;
@@ -10,7 +13,34 @@
   --border: #E9DCCD;
 }
 
-/* MAIN LAYOUT */
+/* ========================================
+   GLOBAL STYLES
+======================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ========================================
+   MAIN LAYOUT
+======================================== */
+
 .dashboard-layout {
   display: flex;
   width: 100%;
@@ -19,7 +49,16 @@
   color: var(--dark-brown);
 }
 
-/* SIDEBAR */
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+  padding: 25px 18px;
+}
+
+/* ========================================
+   SIDEBAR
+======================================== */
+
 .sidebar {
   width: 280px;
   min-width: 280px;
@@ -69,6 +108,7 @@
   border-radius: 15px;
   font-size: 17px;
   font-weight: 550;
+  color: var(--dark-brown);
   transition: 0.2s ease;
 }
 
@@ -114,14 +154,10 @@
   font-weight: 600;
 }
 
-/* MAIN CONTENT */
-.dashboard-main {
-  flex: 1;
-  min-width: 0;
-  padding: 25px 12px;
-}
+/* ========================================
+   HEADER
+======================================== */
 
-/* HEADER */
 .top-header {
   display: flex;
   align-items: center;
@@ -191,7 +227,10 @@
   place-items: center;
 }
 
-/* PREGNANCY BANNER */
+/* ========================================
+   PREGNANCY BANNER
+======================================== */
+
 .pregnancy-banner {
   min-height: 220px;
   background: #E9D8C5;
@@ -209,6 +248,7 @@
 }
 
 .pregnancy-image img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -304,11 +344,14 @@
   line-height: 1.5;
 }
 
-/* DASHBOARD GRID */
+/* ========================================
+   DASHBOARD GRID
+======================================== */
+
 .dashboard-grid {
   display: grid;
-  gap: 12px;
-  margin-bottom: 17px;
+  gap: 15px;
+  margin-bottom: 18px;
 }
 
 .top-grid {
@@ -326,6 +369,12 @@
   padding: 19px;
   min-width: 0;
   box-shadow: 0 3px 12px rgba(73, 51, 38, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(73, 51, 38, 0.09);
 }
 
 .card-heading {
@@ -344,11 +393,13 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .card-heading h3 i {
   color: var(--brown);
   font-size: 23px;
+  flex-shrink: 0;
 }
 
 .card-heading a {
@@ -356,13 +407,21 @@
   font-size: 14px;
   font-weight: 650;
   white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.card-heading a:hover {
+  color: var(--dark-brown);
 }
 
 .card-heading a i {
   margin-left: 3px;
 }
 
-/* LEARNING PROGRESS */
+/* ========================================
+   LEARNING PROGRESS
+======================================== */
+
 .learning-content {
   display: flex;
   align-items: center;
@@ -429,7 +488,10 @@
   font-size: 18px;
 }
 
-/* APPOINTMENTS */
+/* ========================================
+   APPOINTMENTS
+======================================== */
+
 .appointment-details {
   background: #E8EDE6;
   border-radius: 16px;
@@ -476,10 +538,13 @@
   font-size: 14px;
 }
 
-/* QUICK ACTIONS */
+/* ========================================
+   QUICK ACTIONS
+======================================== */
+
 .quick-actions {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -511,12 +576,26 @@
   font-weight: 600;
 }
 
-.action-purple { background: #EAE0D4; }
-.action-pink { background: #F0DED3; }
-.action-green { background: #E3EADF; }
-.action-blue { background: #E2E5DD; }
+.action-purple {
+  background: #EAE0D4;
+}
 
-/* MY DIARY */
+.action-pink {
+  background: #F0DED3;
+}
+
+.action-green {
+  background: #E3EADF;
+}
+
+.action-blue {
+  background: #E2E5DD;
+}
+
+/* ========================================
+   MY DIARY
+======================================== */
+
 .diary-note {
   background: #F3E9DC;
   padding: 16px;
@@ -547,26 +626,48 @@
   margin: 13px auto 0;
 }
 
-/* FACILITIES */
+/* ========================================
+   HEALTHCARE FACILITIES
+======================================== */
+
+.facilities-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.facilities-card .card-heading h3 {
+  font-size: 16px;
+}
+
 .facility-content {
-  display: flex;
-  gap: 13px;
+  display: grid;
+  grid-template-columns: minmax(90px, 35%) minmax(0, 1fr);
   align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  margin-top: 15px;
 }
 
 .facility-image {
-  width: 42%;
-  min-height: 145px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #D8C8B5, #9E876E);
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
+  width: 100%;
+  height: 150px;
+  min-width: 0;
+  border-radius: 13px;
+  overflow: hidden;
+  background: var(--sand);
 }
 
-.facility-image i {
-  font-size: 60px;
-  color: white;
+.facility-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.facility-image:hover img {
+  transform: scale(1.05);
 }
 
 .facility-info {
@@ -579,18 +680,22 @@
   color: #536E3F;
   border-radius: 20px;
   padding: 5px 9px;
-  font-size: 12px;
-  margin-bottom: 8px;
+  font-size: 11px;
+  margin-bottom: 7px;
 }
 
 .facility-info h3 {
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 1.4;
   margin-bottom: 8px;
+  overflow-wrap: anywhere;
 }
 
 .facility-info p {
-  font-size: 12px;
-  margin-bottom: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+  margin-bottom: 7px;
+  overflow-wrap: anywhere;
 }
 
 .facility-info p i {
@@ -602,11 +707,14 @@
   background: transparent;
   border: 1.5px solid var(--brown);
   color: var(--brown);
-  padding: 8px 12px;
-  border-radius: 12px;
+  padding: 8px 10px;
+  border-radius: 11px;
   font-weight: 650;
-  margin-top: 3px;
-  font-size: 12px;
+  margin-top: 4px;
+  font-size: 11px;
+  max-width: 100%;
+  white-space: nowrap;
+  transition: 0.2s ease;
 }
 
 .outline-button:hover {
@@ -614,45 +722,64 @@
   color: white;
 }
 
-/* ARTICLES */
+/* ========================================
+   ARTICLES AND QUIZZES
+======================================== */
+
 .article-content {
   display: flex;
   align-items: center;
   gap: 15px;
+  min-width: 0;
 }
 
 .article-illustration {
   flex: 0 0 40%;
-  min-height: 145px;
-  border-radius: 50% 50% 40% 40%;
-  background: #E9D8C5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--brown);
+  height: 150px;
+  min-width: 0;
+  border-radius: 17px;
+  overflow: hidden;
+  background: var(--sand);
 }
 
-.article-illustration i:first-child {
-  font-size: 60px;
+.article-illustration img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.article-illustration i:last-child {
-  font-size: 30px;
+.article-illustration:hover img {
+  transform: scale(1.05);
+}
+
+.article-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .article-content h3 {
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1.4;
   margin-bottom: 9px;
 }
 
 .article-content p {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
   margin-bottom: 12px;
 }
 
-/* RESPONSIVE DESIGN */
+.article-content .primary-button {
+  padding: 10px 13px;
+  font-size: 12px;
+}
+
+/* ========================================
+   TABLET RESPONSIVE DESIGN
+======================================== */
+
 @media (max-width: 1250px) {
   .sidebar {
     width: 230px;
@@ -678,6 +805,10 @@
     margin: 10px 15px;
   }
 }
+
+/* ========================================
+   SMALL TABLETS
+======================================== */
 
 @media (max-width: 850px) {
   .sidebar {
@@ -730,7 +861,19 @@
   .articles-card {
     grid-column: auto;
   }
+
+  .facility-content {
+    grid-template-columns: minmax(120px, 35%) minmax(0, 1fr);
+  }
+
+  .facility-image {
+    height: 160px;
+  }
 }
+
+/* ========================================
+   MOBILE RESPONSIVE DESIGN
+======================================== */
 
 @media (max-width: 550px) {
   .sidebar {
@@ -805,6 +948,10 @@
     font-size: 14px;
   }
 
+  .card-heading h3 i {
+    font-size: 18px;
+  }
+
   .card-heading a {
     font-size: 12px;
   }
@@ -829,86 +976,68 @@
 
   .appointment-details {
     padding: 14px;
+    gap: 15px;
+  }
+
+  .appointment-details h3 {
+    font-size: 16px;
   }
 
   .facility-content {
-    align-items: flex-start;
+    grid-template-columns: 36% minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
   }
 
   .facility-image {
-    min-height: 120px;
+    height: 135px;
+  }
+
+  .facility-info h3 {
+    font-size: 13px;
+  }
+
+  .facility-info p {
+    font-size: 10px;
+  }
+
+  .facility-info .outline-button {
+    padding: 7px 8px;
+    font-size: 10px;
   }
 
   .article-content {
-    align-items: flex-start;
+    align-items: center;
+    gap: 12px;
   }
 
   .article-illustration {
-    min-height: 115px;
+    flex-basis: 38%;
+    height: 125px;
+  }
+
+  .article-content h3 {
+    font-size: 15px;
+  }
+
+  .article-content p {
+    font-size: 12px;
+  }
+
+  .article-content .primary-button {
+    padding: 9px 10px;
+    font-size: 11px;
   }
 }
 
-
-/* DASHBOARD POLISH */
-
-.dashboard-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 22px rgba(73, 51, 38, 0.09);
-}
-
-.card-heading a {
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.card-heading a:hover {
-  color: var(--dark-brown);
-}
-
-button {
-  cursor: pointer;
-}
+/* ========================================
+   ACCESSIBILITY AND ANIMATIONS
+======================================== */
 
 button:focus-visible,
 a:focus-visible {
   outline: 3px solid var(--light-brown);
   outline-offset: 3px;
-}
-
-.facility-image img,
-.article-illustration img {
-  transition: transform 0.3s ease;
-}
-
-.facility-image:hover img,
-.article-illustration:hover img {
-  transform: scale(1.05);
-}
-
-/* SMALL SCREEN IMPROVEMENTS */
-
-@media (max-width: 550px) {
-  .facility-image {
-    width: 38%;
-    min-height: 140px;
-  }
-
-  .facility-image img {
-    min-height: 140px;
-  }
-
-  .article-illustration {
-    flex-basis: 38%;
-    height: 130px;
-  }
-
-  .article-content h3 {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
