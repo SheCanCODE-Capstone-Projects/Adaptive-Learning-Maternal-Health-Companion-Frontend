@@ -1,122 +1,89 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+
+import { useState } from "react";
+
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import CreateAccount from "./pages/CreateAccount";
+import ForgotPassword from "./pages/ForgotPassword";
+import Notifications from "./pages/Notifications";
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentPage, setCurrentPage] = useState("login");
 
+  // Handle login
+  function handleLogin() {
+    setIsLoggedIn(true);
+    setCurrentPage("dashboard");
+  }
+
+  // Handle account creation
+  function handleCreateAccount() {
+    setIsLoggedIn(true);
+    setCurrentPage("dashboard");
+  }
+
+  // Handle logout
+  function handleLogout() {
+    setIsLoggedIn(false);
+    setCurrentPage("login");
+  }
+
+  // Open notifications
+  function handleOpenNotifications() {
+    setCurrentPage("notifications");
+  }
+
+  // Return to dashboard
+  function handleBackToDashboard() {
+    setCurrentPage("dashboard");
+  }
+
+  // Show Create Account page
+  if (!isLoggedIn && currentPage === "create-account") {
+    return (
+      <CreateAccount
+        onCreateAccount={handleCreateAccount}
+        onBackToLogin={() => setCurrentPage("login")}
+      />
+    );
+  }
+
+  // Show Forgot Password page
+  if (!isLoggedIn && currentPage === "forgot-password") {
+    return (
+      <ForgotPassword
+        onBackToLogin={() => setCurrentPage("login")}
+      />
+    );
+  }
+
+  // Show Login page
+  if (!isLoggedIn) {
+    return (
+      <Login
+        onLogin={handleLogin}
+        onOpenCreateAccount={() => setCurrentPage("create-account")}
+        onOpenForgotPassword={() => setCurrentPage("forgot-password")}
+      />
+    );
+  }
+
+  // Show Dashboard and Notifications
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      {currentPage === "dashboard" ? (
+        <Dashboard
+          onOpenNotifications={handleOpenNotifications}
+          onLogout={handleLogout}
+        />
+      ) : (
+        <Notifications onBack={handleBackToDashboard} />
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
