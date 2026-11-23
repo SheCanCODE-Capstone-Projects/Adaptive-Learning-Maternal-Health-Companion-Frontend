@@ -1,0 +1,468 @@
+
+/* =====================================
+   1. GLOBAL STYLES
+===================================== */
+
+:root {
+  --white: #ffffff;
+  --dark: #24292f;
+  --blue: #0969da;
+  --purple: #482d58;
+  --pink-purple: #854c80;
+  --soft-pink: #f4dce9;
+  --teal: #0f766e;
+  --turquoise: #14b8a6;
+  --background: #f6f8fa;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --danger: #dc2626;
+  --success: #15803d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* =====================================
+   2. MAIN APPLICATION LAYOUT
+===================================== */
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--background);
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+  width: 100%;
+  padding: 30px;
+}
+
+/* =====================================
+   3. SIDEBAR
+===================================== */
+
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  min-height: 100vh;
+  padding: 25px 18px;
+  background: var(--purple);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  padding: 10px;
+}
+
+.sidebar-logo h2 {
+  font-size: 23px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.sidebar-logo p {
+  color: var(--soft-pink);
+  font-size: 13px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--white);
+  padding: 13px;
+  border-radius: 9px;
+  transition: 0.3s ease;
+}
+
+.sidebar-nav a:hover {
+  background: var(--pink-purple);
+  transform: translateX(3px);
+}
+
+.sidebar-nav a.active {
+  background: var(--pink-purple);
+  font-weight: bold;
+  border-left: 4px solid var(--turquoise);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 15px 10px;
+  color: var(--soft-pink);
+  font-size: 13px;
+}
+
+/* =====================================
+   4. NAVBAR
+===================================== */
+
+.navbar {
+  min-height: 85px;
+  background: var(--white);
+  padding: 18px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.navbar h2 {
+  color: var(--purple);
+  font-size: 21px;
+  margin: 0;
+}
+
+.navbar p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--dark);
+  background: var(--soft-pink);
+  padding: 9px 14px;
+  border-radius: 25px;
+}
+
+.navbar-user span {
+  font-size: 20px;
+}
+
+/* =====================================
+   5. PAGE HEADINGS
+===================================== */
+
+h1,
+h2,
+h3 {
+  color: var(--purple);
+}
+
+.page-content h1 {
+  margin-bottom: 10px;
+}
+
+.page-content p {
+  color: var(--muted);
+}
+
+/* =====================================
+   6. CARDS AND CONTAINERS
+===================================== */
+
+.card,
+.appointment-card,
+.diary-card,
+.notification-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+.card h2,
+.appointment-card h2,
+.diary-card h2 {
+  color: var(--purple);
+}
+
+/* =====================================
+   7. FORMS
+===================================== */
+
+form {
+  background: var(--white);
+  padding: 22px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  color: var(--dark);
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--dark);
+  margin-bottom: 15px;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.12);
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* =====================================
+   8. BUTTONS
+===================================== */
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 18px;
+  background: var(--teal);
+  color: var(--white);
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background: var(--turquoise);
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--teal);
+}
+
+.btn-secondary {
+  background: var(--blue);
+}
+
+.btn-danger {
+  background: var(--danger);
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+/* =====================================
+   9. STATUS LABELS
+===================================== */
+
+.status {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-read {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-unread {
+  background: var(--soft-pink);
+  color: var(--purple);
+}
+
+/* =====================================
+   10. LINKS
+===================================== */
+
+.page-content a {
+  color: var(--blue);
+}
+
+.page-content a:hover {
+  text-decoration: underline;
+}
+
+/* =====================================
+   11. FOOTER
+===================================== */
+
+.app-footer {
+  padding: 18px 30px;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* =====================================
+   12. RESPONSIVE DESIGN
+===================================== */
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+  }
+
+  .page-content {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    min-height: auto;
+    padding: 15px;
+  }
+
+  .sidebar-logo {
+    padding: 5px;
+  }
+
+  .sidebar-logo h2 {
+    font-size: 20px;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+  }
+
+  .sidebar-nav a {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  .navbar {
+    padding: 15px;
+    min-height: 75px;
+  }
+
+  .navbar h2 {
+    font-size: 17px;
+  }
+
+  .navbar-user {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .page-content {
+    padding: 18px 14px;
+  }
+
+  .app-footer {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .navbar-user {
+    align-self: flex-start;
+  }
+
+  .sidebar-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sidebar-nav a {
+    justify-content: center;
+    text-align: center;
+  }
+
+  form {
+    padding: 15px;
+  }
+
+  .card,
+  .appointment-card,
+  .diary-card,
+  .notification-card {
+    padding: 15px;
+  }
+}
