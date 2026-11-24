@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -182,3 +183,1723 @@
     border-right-color: var(--border);
   }
 }
+=======
+
+/* =====================================================
+   1. GLOBAL COLOR VARIABLES
+===================================================== */
+
+:root {
+  --white: #ffffff;
+  --dark: #43352c;
+  --primary: #654b3d;
+  --secondary: #8b705d;
+  --accent: #b69b84;
+
+  --background: #f5f1ea;
+  --border: #e5dcd0;
+  --sage: #d8e0d5;
+  --beige: #e8e0d7;
+  --muted: #82786f;
+
+  --danger: #b85c50;
+  --success: #617b5d;
+
+  --shadow: 0 5px 20px rgba(67, 53, 44, 0.07);
+  --radius: 16px;
+}
+
+/* =====================================================
+   2. RESET AND GLOBAL STYLES
+===================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  background: var(--background);
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--sage);
+  color: var(--primary);
+}
+
+/* =====================================================
+   3. MAIN APPLICATION LAYOUT
+===================================================== */
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  min-width: 0;
+  min-height: 100vh;
+}
+
+.page-content {
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.page-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* =====================================================
+   4. SIDEBAR
+===================================================== */
+
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 18px;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 55px;
+}
+
+.brand-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: var(--sage);
+  color: var(--primary);
+  font-size: 28px;
+}
+
+.sidebar-brand h2 {
+  font-size: 19px;
+  color: var(--primary);
+  line-height: 1.3;
+}
+
+.sidebar-brand span {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.sidebar-label {
+  margin: 0 0 16px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 15px;
+  border-radius: 12px;
+  color: var(--secondary);
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.25s ease;
+}
+
+.nav-link span:first-child {
+  font-size: 21px;
+}
+
+.nav-link:hover {
+  background: var(--background);
+  color: var(--primary);
+  transform: translateX(3px);
+}
+
+.nav-link.active {
+  background: var(--sage);
+  color: var(--primary);
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+.sidebar-help {
+  padding: 18px;
+  border-radius: var(--radius);
+  background: var(--background);
+  border: 1px solid var(--border);
+}
+
+.sidebar-help > span {
+  font-size: 26px;
+  color: var(--primary);
+}
+
+.sidebar-help h4 {
+  margin: 10px 0 5px;
+  color: var(--primary);
+  font-size: 14px;
+}
+
+.sidebar-help p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.sidebar-footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 25px;
+}
+
+/* =====================================================
+   5. TOP NAVIGATION BAR
+===================================================== */
+
+.top-navbar {
+  width: 100%;
+  min-height: 85px;
+  padding: 15px 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar-welcome {
+  color: var(--primary);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.top-navbar p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.navbar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-avatar {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--beige);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.profile-info strong {
+  font-size: 13px;
+  color: var(--dark);
+}
+
+.profile-info span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* =====================================================
+   6. PAGE HEADINGS
+===================================================== */
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 5px;
+}
+
+.eyebrow {
+  display: inline-block;
+  color: var(--secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 7px;
+}
+
+.page-heading h1 {
+  font-size: 30px;
+  font-weight: 750;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.page-heading p {
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 600px;
+}
+
+.heading-icon {
+  width: 65px;
+  height: 65px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: var(--sage);
+  color: var(--primary);
+  border-radius: 20px;
+  font-size: 30px;
+}
+
+/* =====================================================
+   7. CONTENT CARDS
+===================================================== */
+
+.content-card {
+  width: 100%;
+  padding: 25px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.card-heading h2 {
+  color: var(--primary);
+  font-size: 19px;
+  margin-bottom: 4px;
+}
+
+.card-heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.card-heading-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--beige);
+  font-size: 20px;
+}
+
+/* =====================================================
+   8. STATISTICS CARDS
+===================================================== */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 22px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  font-size: 21px;
+}
+
+.stat-icon.purple {
+  background: var(--beige);
+  color: var(--primary);
+}
+
+.stat-icon.teal {
+  background: var(--sage);
+  color: var(--success);
+}
+
+.stat-icon.pink {
+  background: #f2e5df;
+  color: var(--secondary);
+}
+
+.stat-card h3 {
+  font-size: 24px;
+  color: var(--primary);
+  line-height: 1.3;
+}
+
+.stat-card p {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* =====================================================
+   9. FORMS
+===================================================== */
+
+.appointment-form,
+.diary-form {
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  min-width: 0;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--dark);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fffdfb;
+  color: var(--dark);
+  font-size: 13px;
+  transition: 0.2s ease;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: var(--accent);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(101, 75, 61, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* =====================================================
+   10. BUTTONS
+===================================================== */
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 12px 19px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: 0.25s ease;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--secondary);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--beige);
+  color: var(--primary);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--sage);
+}
+
+.btn-danger {
+  background: #f8e9e6;
+  color: var(--danger);
+  border-color: #eed2cc;
+}
+
+.btn-danger:hover {
+  background: var(--danger);
+  color: var(--white);
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: var(--sage);
+}
+
+/* =====================================================
+   11. SUCCESS AND EMPTY STATES
+===================================================== */
+
+.success-message {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 15px;
+  margin-bottom: 20px;
+  background: var(--sage);
+  border: 1px solid #c5d3c1;
+  color: var(--success);
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.success-message button {
+  border: none;
+  background: transparent;
+  color: var(--success);
+  font-size: 20px;
+}
+
+.empty-state {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.empty-state > span {
+  font-size: 40px;
+}
+
+.empty-state h3 {
+  color: var(--primary);
+  margin: 12px 0 5px;
+}
+
+.empty-state p,
+.muted-text {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.muted-text {
+  padding: 10px 0;
+}
+
+/* =====================================================
+   12. APPOINTMENTS PAGE
+===================================================== */
+
+.appointment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.appointment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffdfb;
+  transition: 0.2s ease;
+}
+
+.appointment-item:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.appointment-date {
+  width: 60px;
+  height: 65px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--sage);
+  color: var(--primary);
+}
+
+.appointment-date strong {
+  font-size: 23px;
+  line-height: 1.2;
+}
+
+.appointment-date span {
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.appointment-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.appointment-details h3 {
+  color: var(--primary);
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.appointment-details p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 5px;
+  overflow-wrap: anywhere;
+}
+
+.appointment-note {
+  padding: 8px;
+  margin-top: 8px;
+  background: var(--background);
+  border-radius: 8px;
+}
+
+.appointment-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 5px 10px;
+  margin-top: 8px;
+  border-radius: 20px;
+  background: var(--beige);
+  color: var(--secondary);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.status-badge.today,
+.status-badge.due-soon {
+  background: #f4e8d5;
+  color: var(--primary);
+}
+
+.status-badge.completed {
+  background: var(--sage);
+  color: var(--success);
+}
+
+.status-badge.past-due {
+  background: #f8e9e6;
+  color: var(--danger);
+}
+
+.completed-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.completed-item:last-child {
+  border-bottom: none;
+}
+
+.completed-item strong {
+  font-size: 13px;
+  color: var(--primary);
+}
+
+.completed-item p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* =====================================================
+   13. PRIVACY NOTICE
+===================================================== */
+
+.privacy-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 17px 20px;
+  background: var(--sage);
+  border: 1px solid #c9d5c6;
+  border-radius: 13px;
+}
+
+.privacy-notice > span {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.privacy-notice strong {
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.privacy-notice p {
+  color: var(--dark);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* =====================================================
+   14. DIARY PAGE
+===================================================== */
+
+.diary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.diary-entry {
+  padding: 21px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffdfb;
+  transition: 0.2s ease;
+}
+
+.diary-entry:hover {
+  border-color: var(--accent);
+}
+
+.diary-entry-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.diary-category {
+  color: var(--secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sync-status {
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.sync-status.pending {
+  color: var(--secondary);
+}
+
+.diary-entry h3 {
+  color: var(--primary);
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+
+.diary-date {
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 13px;
+}
+
+.diary-content {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--dark);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.diary-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 17px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+
+.sync-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 22px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.sync-card h3 {
+  font-size: 15px;
+  color: var(--primary);
+}
+
+.sync-card p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+  max-width: 400px;
+}
+
+.connection-badge {
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.connection-badge.online {
+  color: var(--success);
+  background: var(--sage);
+}
+
+.connection-badge.offline {
+  color: var(--danger);
+  background: #f8e9e6;
+}
+
+/* =====================================================
+   15. MY JOURNEY PAGE
+===================================================== */
+
+.journey-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  min-height: 235px;
+  padding: 35px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 20px;
+  background: linear-gradient(
+    120deg,
+    #e8e0d7,
+    #d8e0d5
+  );
+}
+
+.journey-welcome-content {
+  max-width: 620px;
+  position: relative;
+  z-index: 1;
+}
+
+.journey-welcome-content > span {
+  color: var(--secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.journey-welcome h2 {
+  color: var(--primary);
+  font-size: 29px;
+  margin: 10px 0;
+}
+
+.journey-welcome p {
+  color: var(--dark);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.journey-illustration {
+  position: relative;
+  flex-shrink: 0;
+  width: 155px;
+  height: 155px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  font-size: 75px;
+}
+
+.journey-illustration span {
+  position: absolute;
+  right: 5px;
+  bottom: 8px;
+  font-size: 29px;
+}
+
+/* Stage selection */
+
+.stage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.stage-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 8px;
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: #fffdfb;
+  color: var(--dark);
+  transition: 0.2s ease;
+}
+
+.stage-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.stage-card.active {
+  border: 2px solid var(--primary);
+  background: var(--sage);
+}
+
+.stage-icon {
+  font-size: 27px;
+  margin-bottom: 4px;
+}
+
+.stage-card strong {
+  font-size: 12px;
+  color: var(--primary);
+}
+
+.stage-card small {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.stage-selected {
+  font-size: 10px;
+  color: var(--success);
+  font-weight: 700;
+}
+
+.expected-date {
+  margin-top: 23px;
+  max-width: 350px;
+}
+
+/* Current stage banner */
+
+.journey-stage-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 26px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--white);
+}
+
+.journey-stage-banner .eyebrow {
+  color: var(--beige);
+}
+
+.journey-stage-banner h2 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.journey-stage-banner p {
+  color: #e8e0d7;
+  font-size: 12px;
+}
+
+.stage-progress-circle {
+  width: 95px;
+  height: 95px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 4px solid var(--accent);
+  border-radius: 50%;
+}
+
+.stage-progress-circle strong {
+  font-size: 22px;
+}
+
+.stage-progress-circle span {
+  font-size: 9px;
+}
+
+/* Progress bar */
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 11px;
+  overflow: hidden;
+  background: var(--beige);
+  border-radius: 20px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--success);
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+.completion-message {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--success);
+  font-weight: 600;
+}
+
+/* Sample content warning */
+
+.sample-warning {
+  padding: 15px;
+  margin-bottom: 20px;
+  background: #f5eee4;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.sample-warning strong {
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.sample-warning p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 5px;
+}
+
+/* Lessons */
+
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.lesson-card {
+  display: grid;
+  grid-template-columns: 55px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px;
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fffdfb;
+}
+
+.lesson-icon {
+  width: 53px;
+  height: 53px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--sage);
+  font-size: 25px;
+}
+
+.lesson-details {
+  min-width: 0;
+}
+
+.lesson-category {
+  color: var(--secondary);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.lesson-details h3 {
+  font-size: 14px;
+  color: var(--primary);
+  margin: 5px 0;
+}
+
+.lesson-details p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.lesson-duration {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--secondary);
+  font-size: 11px;
+}
+
+.lesson-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.lesson-actions .btn-primary,
+.lesson-actions .btn-secondary {
+  white-space: nowrap;
+  padding: 9px 13px;
+  font-size: 11px;
+}
+
+.lesson-completed,
+.lesson-pending {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.lesson-completed {
+  color: var(--success);
+}
+
+.lesson-pending {
+  color: var(--muted);
+}
+
+.lesson-expanded {
+  grid-column: 1 / -1;
+  padding: 18px;
+  margin-top: 5px;
+  background: var(--background);
+  border-radius: 12px;
+}
+
+.lesson-expanded h4 {
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.lesson-expanded p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.lesson-diary-link {
+  display: inline-block;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.lesson-diary-link:hover {
+  color: var(--success);
+}
+
+.lesson-done-btn {
+  display: flex;
+  width: fit-content;
+}
+
+/* Quick links */
+
+.journey-quick-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.quick-link-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  transition: 0.2s ease;
+}
+
+.quick-link-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.quick-link-card > span {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: var(--sage);
+  border-radius: 12px;
+  font-size: 22px;
+}
+
+.quick-link-card div {
+  flex: 1;
+  min-width: 0;
+}
+
+.quick-link-card h3 {
+  color: var(--primary);
+  font-size: 13px;
+}
+
+.quick-link-card p {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.quick-link-card > strong {
+  color: var(--secondary);
+  font-size: 20px;
+}
+
+/* =====================================================
+   16. SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* =====================================================
+   17. TABLET RESPONSIVENESS
+===================================================== */
+
+@media (max-width: 1050px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .main-content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+  }
+
+  .page-content {
+    padding: 23px;
+  }
+
+  .stage-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stats-grid {
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .lesson-card {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .lesson-actions {
+    grid-column: 2;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
+/* =====================================================
+   18. MOBILE RESPONSIVENESS
+===================================================== */
+
+@media (max-width: 650px) {
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    padding: 8px 10px;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-right: none;
+    box-shadow: 0 -3px 15px rgba(67, 53, 44, 0.06);
+  }
+
+  .sidebar-brand,
+  .sidebar-label,
+  .sidebar-bottom {
+    display: none;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 5px;
+  }
+
+  .nav-link {
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 8px 3px;
+    border-radius: 10px;
+    font-size: 10px;
+  }
+
+  .nav-link span:first-child {
+    font-size: 20px;
+  }
+
+  .nav-link:hover {
+    transform: none;
+  }
+
+  .main-content {
+    width: 100%;
+    margin-left: 0;
+    padding-bottom: 75px;
+  }
+
+  .top-navbar {
+    min-height: 70px;
+    padding: 10px 17px;
+  }
+
+  .navbar-welcome {
+    font-size: 13px;
+  }
+
+  .top-navbar p {
+    font-size: 10px;
+  }
+
+  .profile-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .profile-info strong {
+    font-size: 11px;
+  }
+
+  .profile-info span {
+    font-size: 9px;
+  }
+
+  .page-content {
+    padding: 17px 13px;
+  }
+
+  .page-container {
+    gap: 17px;
+  }
+
+  .page-heading h1 {
+    font-size: 24px;
+  }
+
+  .page-heading p {
+    font-size: 12px;
+  }
+
+  .heading-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    font-size: 23px;
+  }
+
+  .content-card {
+    padding: 17px;
+  }
+
+  .card-heading h2 {
+    font-size: 16px;
+  }
+
+  .card-heading p {
+    font-size: 11px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-card h3 {
+    font-size: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  .appointment-item {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 13px;
+  }
+
+  .appointment-date {
+    width: 52px;
+    height: 57px;
+  }
+
+  .appointment-details {
+    flex: 1;
+  }
+
+  .appointment-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .completed-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sync-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sync-card button {
+    width: 100%;
+  }
+
+  .journey-welcome {
+    min-height: auto;
+    padding: 23px 18px;
+  }
+
+  .journey-welcome h2 {
+    font-size: 21px;
+  }
+
+  .journey-welcome p {
+    font-size: 11px;
+  }
+
+  .journey-illustration {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+  }
+
+  .journey-illustration span {
+    font-size: 19px;
+  }
+
+  .stage-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .stage-card {
+    padding: 13px;
+  }
+
+  .stage-card strong {
+    font-size: 11px;
+  }
+
+  .journey-stage-banner {
+    padding: 18px;
+  }
+
+  .journey-stage-banner h2 {
+    font-size: 17px;
+  }
+
+  .stage-progress-circle {
+    width: 76px;
+    height: 76px;
+  }
+
+  .stage-progress-circle strong {
+    font-size: 18px;
+  }
+
+  .lesson-card {
+    grid-template-columns: 42px minmax(0, 1fr);
+    padding: 13px;
+    gap: 11px;
+  }
+
+  .lesson-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 21px;
+  }
+
+  .lesson-details h3 {
+    font-size: 12px;
+  }
+
+  .lesson-details p {
+    font-size: 11px;
+  }
+
+  .lesson-actions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .journey-quick-links {
+    grid-template-columns: 1fr;
+  }
+
+  .diary-entry {
+    padding: 15px;
+  }
+
+  .diary-entry h3 {
+    font-size: 15px;
+  }
+
+  .diary-actions {
+    flex-wrap: wrap;
+  }
+
+  .privacy-notice {
+    padding: 13px;
+  }
+}
+
+/* =====================================================
+   19. SMALL MOBILE DEVICES
+===================================================== */
+
+@media (max-width: 380px) {
+  .page-content {
+    padding: 12px 9px;
+  }
+
+  .top-navbar {
+    padding: 10px;
+  }
+
+  .profile-info {
+    display: none;
+  }
+
+  .journey-illustration {
+    width: 60px;
+    height: 60px;
+    font-size: 32px;
+  }
+
+  .stage-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stage-card {
+    padding: 10px;
+  }
+
+  .appointment-details h3 {
+    font-size: 13px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+}
+
+/* =====================================================
+   20. REDUCED MOTION ACCESSIBILITY
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+>>>>>>> 0006e06 (Add frontend pages)
