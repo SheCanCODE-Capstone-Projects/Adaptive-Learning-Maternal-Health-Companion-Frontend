@@ -1,15 +1,21 @@
 
 function Navbar() {
   return (
-    <header className="navbar">
-      <div>
-        <h2>Welcome to MaternalCare</h2>
-        <p>Your personal health companion</p>
+    <header className="top-navbar">
+      <div className="navbar-welcome">
+        <h2>Welcome to MaternaCare</h2>
+        <p>Your companion through pregnancy and motherhood.</p>
       </div>
 
-      <div className="navbar-user">
-        <span>👩</span>
-        <strong>My Account</strong>
+      <div className="navbar-profile">
+        <div className="profile-avatar">
+          A
+        </div>
+
+        <div className="profile-info">
+          <h4>Mother</h4>
+          <p>My Profile</p>
+        </div>
       </div>
     </header>
   );

@@ -1,71 +1,36 @@
 
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 
+import MyJourney from "./pages/MyJourney";
 import Appointments from "./pages/Appointments";
 import Diary from "./pages/Diary";
-import Notifications from "./pages/Notifications";
-
-import "./App.css";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="app-layout">
-        {/* Left navigation */}
-        <Sidebar />
+    <div className="app-layout">
+      {/* Shared sidebar */}
+      <Sidebar />
 
-        {/* Main application area */}
-        <main className="main-content">
-          {/* Top navigation */}
-          <Navbar />
+      <main className="main-content">
+        {/* Shared navbar */}
+        <Navbar />
 
-          {/* Application pages */}
-          <div className="page-content">
-            <Routes>
-              <Route
-                path="/"
-                element={<Navigate to="/appointments" replace />}
-              />
+        {/* Page content changes depending on the route */}
+        <div className="page-content">
+          <Routes>
+            <Route path="/" element={<MyJourney />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/diary" element={<Diary />} />
 
-              <Route
-                path="/appointments"
-                element={<Appointments />}
-              />
-
-              <Route
-                path="/diary"
-                element={<Diary />}
-              />
-
-              <Route
-                path="/notifications"
-                element={<Notifications />}
-              />
-
-              <Route
-                path="*"
-                element={<Navigate to="/appointments" replace />}
-              />
-            </Routes>
-          </div>
-
-          <footer className="app-footer">
-            <p>
-              © {new Date().getFullYear()} MaternalCare.
-              Your health, your journey.
-            </p>
-          </footer>
-        </main>
-      </div>
-    </BrowserRouter>
+            {/* Redirect unknown pages */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </main>
+    </div>
   );
 }
 
