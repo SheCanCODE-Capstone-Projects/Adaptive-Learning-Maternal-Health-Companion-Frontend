@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 import Dashboard from "./pages/Dashboard";
@@ -6,42 +5,48 @@ import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import ForgotPassword from "./pages/ForgotPassword";
 import Notifications from "./pages/Notifications";
+import Header from "./components/Header";
 
 import "./App.css";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentPage, setCurrentPage] = useState("login");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    Boolean(localStorage.getItem("token"))
+  );
 
-  // Handle login
+  const [currentPage, setCurrentPage] = useState(
+    localStorage.getItem("token") ? "dashboard" : "login"
+  );
+
+  const [unreadCount, setUnreadCount] = useState(0);
+
   function handleLogin() {
     setIsLoggedIn(true);
     setCurrentPage("dashboard");
   }
 
-  // Handle account creation
   function handleCreateAccount() {
     setIsLoggedIn(true);
     setCurrentPage("dashboard");
   }
 
-  // Handle logout
   function handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
     setIsLoggedIn(false);
     setCurrentPage("login");
+    setUnreadCount(0);
   }
 
-  // Open notifications
   function handleOpenNotifications() {
     setCurrentPage("notifications");
   }
 
-  // Return to dashboard
   function handleBackToDashboard() {
     setCurrentPage("dashboard");
   }
 
-  // Show Create Account page
   if (!isLoggedIn && currentPage === "create-account") {
     return (
       <CreateAccount
@@ -51,7 +56,6 @@ function App() {
     );
   }
 
-  // Show Forgot Password page
   if (!isLoggedIn && currentPage === "forgot-password") {
     return (
       <ForgotPassword
@@ -60,7 +64,6 @@ function App() {
     );
   }
 
-  // Show Login page
   if (!isLoggedIn) {
     return (
       <Login
@@ -71,18 +74,28 @@ function App() {
     );
   }
 
-  // Show Dashboard and Notifications
   return (
-    <>
-      {currentPage === "dashboard" ? (
+    <div className="app-shell">
+      <Header
+        onOpenNotifications={handleOpenNotifications}
+        onLogout={handleLogout}
+        unreadCount={unreadCount}
+      />
+
+      {currentPage === "notifications" ? (
+        <Notifications
+          onBack={handleBackToDashboard}
+          onUnreadCountChange={setUnreadCount}
+        />
+      ) : (
         <Dashboard
+          currentPage={currentPage}
+          onNavigate={setCurrentPage}
           onOpenNotifications={handleOpenNotifications}
           onLogout={handleLogout}
         />
-      ) : (
-        <Notifications onBack={handleBackToDashboard} />
       )}
-    </>
+    </div>
   );
 }
 

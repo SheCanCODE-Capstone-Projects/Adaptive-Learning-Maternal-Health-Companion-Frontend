@@ -1,56 +1,32 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Notifications.css";
 
-const initialNotifications = [
-  {
-    id: 1,
-    category: "Appointment",
-    title: "Upcoming prenatal checkup",
-    message: "Your prenatal checkup at Kigali Health Center is scheduled for December 5, 2026, at 9:00 AM.",
-    time: "Today",
-    icon: "fa-calendar-days",
-    unread: true,
-  },
-  {
-    id: 2,
-    category: "Health",
-    title: "Your weekly pregnancy reminder",
-    message: "Remember to stay hydrated, eat balanced meals, and get enough rest.",
-    time: "Yesterday",
-    icon: "fa-heart-pulse",
-    unread: true,
-  },
-  {
-    id: 3,
-    category: "Learning",
-    title: "Continue your learning journey",
-    message: "You have lessons remaining on birth preparation and postpartum care.",
-    time: "2 days ago",
-    icon: "fa-graduation-cap",
-    unread: false,
-  },
-];
+function Notifications({ onBack, onUnreadCountChange }) {
+  const [notifications, setNotifications] = useState([]);
 
-function Notifications({ onBack }) {
-  const [notifications, setNotifications] = useState(initialNotifications);
+  // Calculate unread notifications and update the bell count
+  useEffect(() => {
+    const count = notifications.filter(
+      (notification) => notification.unread
+    ).length;
 
-  const unreadCount = notifications.filter(
-    (notification) => notification.unread
-  ).length;
+    onUnreadCountChange(count);
+  }, [notifications, onUnreadCountChange]);
 
+  // Mark all notifications as read
   function markAllAsRead() {
-    setNotifications((previous) =>
-      previous.map((notification) => ({
+    setNotifications((previousNotifications) =>
+      previousNotifications.map((notification) => ({
         ...notification,
         unread: false,
       }))
     );
   }
 
+  // Mark one notification as read
   function markAsRead(id) {
-    setNotifications((previous) =>
-      previous.map((notification) =>
+    setNotifications((previousNotifications) =>
+      previousNotifications.map((notification) =>
         notification.id === id
           ? { ...notification, unread: false }
           : notification
@@ -58,107 +34,104 @@ function Notifications({ onBack }) {
     );
   }
 
+  // Delete a notification
   function deleteNotification(id) {
-    setNotifications((previous) =>
-      previous.filter((notification) => notification.id !== id)
+    setNotifications((previousNotifications) =>
+      previousNotifications.filter(
+        (notification) => notification.id !== id
+      )
     );
   }
 
   return (
     <div className="notifications-page">
       <div className="notifications-container">
+
+        {/* Back Arrow */}
         <div className="notifications-header">
-          <button className="back-button" onClick={onBack}>
+          <button
+            className="back-button"
+            onClick={onBack}
+            aria-label="Back to Dashboard"
+            title="Back to Dashboard"
+          >
             <i className="fa-solid fa-arrow-left"></i>
-            Back to Dashboard
           </button>
-
-          <div className="notifications-heading">
-            <div>
-              <span className="notifications-label">YOUR UPDATES</span>
-              <h1>Notifications</h1>
-              <p>Stay updated with reminders and important information.</p>
-            </div>
-
-            <div className="notification-total">
-              <i className="fa-regular fa-bell"></i>
-              <span>{unreadCount} unread</span>
-            </div>
-          </div>
         </div>
 
+        {/* Notifications Toolbar */}
         <div className="notifications-toolbar">
           <h2>All notifications</h2>
 
-          <button
-            className="mark-all-button"
-            onClick={markAllAsRead}
-            disabled={unreadCount === 0}
-          >
-            <i className="fa-solid fa-check-double"></i>
-            Mark all as read
-          </button>
+          {notifications.some((notification) => notification.unread) && (
+            <button
+              className="mark-all-button"
+              onClick={markAllAsRead}
+            >
+              Mark all as read
+            </button>
+          )}
         </div>
 
+        {/* Notifications List */}
         <div className="notifications-list">
           {notifications.length > 0 ? (
             notifications.map((notification) => (
-              <article
-                className={`notification-card ${
-                  notification.unread ? "unread" : ""
-                }`}
+              <div
                 key={notification.id}
+                className={`notification-card ${
+                  notification.unread ? "unread" : "read"
+                }`}
               >
-                <div className={`notification-icon ${notification.category.toLowerCase()}`}>
-                  <i className={`fa-solid ${notification.icon}`}></i>
+                <div className="notification-icon">
+                  <i className="fa-regular fa-bell"></i>
                 </div>
 
                 <div className="notification-content">
-                  <div className="notification-title-row">
-                    <h3>{notification.title}</h3>
-                    {notification.unread && (
-                      <span className="unread-indicator">New</span>
-                    )}
-                  </div>
+                  <span className="notification-category">
+                    {notification.category}
+                  </span>
+
+                  <h3>{notification.title}</h3>
 
                   <p>{notification.message}</p>
 
-                  <div className="notification-meta">
-                    <span>{notification.category}</span>
-                    <span>·</span>
-                    <span>{notification.time}</span>
-                  </div>
+                  <span className="notification-time">
+                    {notification.date}
+                  </span>
                 </div>
 
                 <div className="notification-actions">
                   {notification.unread && (
                     <button
+                      className="mark-read-button"
                       onClick={() => markAsRead(notification.id)}
-                      aria-label="Mark as read"
-                      title="Mark as read"
                     >
-                      <i className="fa-solid fa-check"></i>
+                      Mark as read
                     </button>
                   )}
 
                   <button
+                    className="delete-button"
                     onClick={() => deleteNotification(notification.id)}
                     aria-label="Delete notification"
-                    title="Delete notification"
                   >
                     <i className="fa-regular fa-trash-can"></i>
                   </button>
                 </div>
-              </article>
+              </div>
             ))
           ) : (
             <div className="empty-notifications">
               <i className="fa-regular fa-bell-slash"></i>
+
               <h3>You're all caught up!</h3>
+
               <p>You don't have any notifications right now.</p>
             </div>
           )}
         </div>
+
       </div>
     </div>
   );

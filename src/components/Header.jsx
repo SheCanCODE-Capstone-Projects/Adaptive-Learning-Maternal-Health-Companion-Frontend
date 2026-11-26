@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Header({ onOpenNotifications, onLogout }) {
+function Header({ onOpenNotifications, onLogout, unreadCount }) {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
   function handleLogout() {
@@ -19,11 +19,16 @@ function Header({ onOpenNotifications, onLogout }) {
         <div className="header-actions">
           <button
             className="notification-button"
-            aria-label="Notifications"
+            aria-label={`Notifications, ${unreadCount} unread`}
             onClick={onOpenNotifications}
           >
             <i className="fa-regular fa-bell"></i>
-            <span className="notification-count">2</span>
+
+            {unreadCount > 0 && (
+              <span className="notification-count">
+                {unreadCount}
+              </span>
+            )}
           </button>
 
           <button
@@ -36,12 +41,12 @@ function Header({ onOpenNotifications, onLogout }) {
             </span>
 
             <span className="logout-text">Logout</span>
+
             <i className="fa-solid fa-right-from-bracket logout-icon"></i>
           </button>
         </div>
       </header>
 
-      {/* Logout Confirmation Popup */}
       {showLogoutPopup && (
         <div className="logout-overlay">
           <div className="logout-modal">

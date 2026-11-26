@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import "./Login.css";
+import { loginUser } from "../services/api";
 
 function Login({
   onLogin,
@@ -10,8 +11,9 @@ function Login({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (!email || !password) {
@@ -19,7 +21,25 @@ function Login({
       return;
     }
 
-    onLogin();
+    try {
+      setLoading(true);
+
+      const result = await loginUser({
+        email,
+        password,
+      });
+
+      // Save authentication information
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("user", JSON.stringify(result));
+
+      // Open the existing dashboard
+      onLogin(result);
+    } catch (error) {
+      alert(error.message || "Login failed. Please check your details.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -103,9 +123,13 @@ function Login({
               </a>
             </div>
 
-            <button type="submit" className="login-button">
-              Sign In
-              <i className="fa-solid fa-arrow-right"></i>
+            <button
+              type="submit"
+              className="login-button"
+              disabled={loading}
+            >
+              {loading ? "Signing In..." : "Sign In"}
+              {!loading && <i className="fa-solid fa-arrow-right"></i>}
             </button>
           </form>
 

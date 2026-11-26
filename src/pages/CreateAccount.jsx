@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import "./Login.css";
+import { registerUser } from "../services/api";
 
 function CreateAccount({ onCreateAccount, onBackToLogin }) {
   const [fullName, setFullName] = useState("");
@@ -11,8 +12,9 @@ function CreateAccount({ onCreateAccount, onBackToLogin }) {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (password.length < 8) {
@@ -25,7 +27,27 @@ function CreateAccount({ onCreateAccount, onBackToLogin }) {
       return;
     }
 
-    onCreateAccount();
+    try {
+      setLoading(true);
+
+      const result = await registerUser({
+  fullName,
+  email,
+  ...(phone.trim() && { phoneNumber: phone.trim() }),
+  password,
+});
+
+      // Save authentication information
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("user", JSON.stringify(result));
+
+      // Continue to the dashboard
+      onCreateAccount(result);
+    } catch (error) {
+      alert(error.message || "Account creation failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -76,14 +98,13 @@ function CreateAccount({ onCreateAccount, onBackToLogin }) {
 
             <div className="login-field">
               <label htmlFor="phone">Phone Number</label>
-              <input
-                id="phone"
-                type="tel"
-                placeholder="Enter your phone number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
+               <input
+  id="phone"
+  type="tel"
+  placeholder="Enter your phone number (optional)"
+  value={phone}
+  onChange={(e) => setPhone(e.target.value)}
+/>
             </div>
 
             <div className="login-field">
@@ -139,9 +160,13 @@ function CreateAccount({ onCreateAccount, onBackToLogin }) {
               </div>
             </div>
 
-            <button type="submit" className="login-button">
-              Create Account
-              <i className="fa-solid fa-arrow-right"></i>
+            <button
+              type="submit"
+              className="login-button"
+              disabled={loading}
+            >
+              {loading ? "Creating Account..." : "Create Account"}
+              {!loading && <i className="fa-solid fa-arrow-right"></i>}
             </button>
           </form>
 

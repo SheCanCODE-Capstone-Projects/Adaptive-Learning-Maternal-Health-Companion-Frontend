@@ -1,19 +1,20 @@
 
 import React from "react";
 import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
 import heroImg from "../assets/hero.png";
 
-function Dashboard({ onOpenNotifications, onLogout }) {
+function Dashboard({
+  currentPage,
+  onNavigate,
+}) {
   return (
     <div className="dashboard-layout">
-      <Sidebar />
+      <Sidebar
+        currentPage={currentPage}
+        onNavigate={onNavigate}
+      />
 
       <main className="dashboard-main">
-        <Header
-  onOpenNotifications={onOpenNotifications}
-  onLogout={onLogout}
-/>
 
         {/* Pregnancy Stage Banner */}
         <section className="pregnancy-banner">
@@ -25,7 +26,10 @@ function Dashboard({ onOpenNotifications, onLogout }) {
             <h3>Your Current Stage</h3>
             <h2>Second Trimester</h2>
             <p>(Weeks 13 – 27)</p>
-            <button className="primary-button">
+            <button
+              className="primary-button"
+              onClick={() => onNavigate("my-journey")}
+            >
               View My Journey <i className="fa-solid fa-arrow-right"></i>
             </button>
           </div>
@@ -56,9 +60,12 @@ function Dashboard({ onOpenNotifications, onLogout }) {
               <h3>
                 <i className="fa-solid fa-chart-simple"></i> Learning Progress
               </h3>
-              <a href="#">
+              <button
+                className="card-link"
+                onClick={() => onNavigate("progress")}
+              >
                 View All <i className="fa-solid fa-arrow-right"></i>
-              </a>
+              </button>
             </div>
 
             <div className="learning-content">
@@ -84,9 +91,12 @@ function Dashboard({ onOpenNotifications, onLogout }) {
               <h3>
                 <i className="fa-regular fa-calendar-days"></i> Upcoming Appointments
               </h3>
-              <a href="#">
+              <button
+                className="card-link"
+                onClick={() => onNavigate("appointments")}
+              >
                 View All <i className="fa-solid fa-arrow-right"></i>
-              </a>
+              </button>
             </div>
 
             <div className="appointment-details">
@@ -114,22 +124,34 @@ function Dashboard({ onOpenNotifications, onLogout }) {
             </div>
 
             <div className="quick-actions">
-              <button className="action-item action-purple">
+              <button
+                className="action-item action-purple"
+                onClick={() => onNavigate("learn")}
+              >
                 <i className="fa-solid fa-graduation-cap"></i>
                 <span>Start a Lesson</span>
               </button>
 
-              <button className="action-item action-pink">
+              <button
+                className="action-item action-pink"
+                onClick={() => onNavigate("diary")}
+              >
                 <i className="fa-solid fa-book-medical"></i>
                 <span>Add Note</span>
               </button>
 
-              <button className="action-item action-green">
+              <button
+                className="action-item action-green"
+                onClick={() => onNavigate("appointments")}
+              >
                 <i className="fa-solid fa-calendar-plus"></i>
                 <span>Add Appointment</span>
               </button>
 
-              <button className="action-item action-blue">
+              <button
+                className="action-item action-blue"
+                onClick={() => onNavigate("facilities")}
+              >
                 <i className="fa-solid fa-hospital"></i>
                 <span>Find a Facility</span>
               </button>
@@ -146,9 +168,12 @@ function Dashboard({ onOpenNotifications, onLogout }) {
               <h3>
                 <i className="fa-solid fa-book"></i> My Diary
               </h3>
-              <a href="#">
+              <button
+                className="card-link"
+                onClick={() => onNavigate("diary")}
+              >
                 View All <i className="fa-solid fa-arrow-right"></i>
-              </a>
+              </button>
             </div>
 
             <div className="diary-note">
@@ -159,7 +184,10 @@ function Dashboard({ onOpenNotifications, onLogout }) {
               </div>
             </div>
 
-            <button className="primary-button new-note-button">
+            <button
+              className="primary-button new-note-button"
+              onClick={() => onNavigate("diary")}
+            >
               <i className="fa-solid fa-plus"></i> New Note
             </button>
           </article>
@@ -170,9 +198,12 @@ function Dashboard({ onOpenNotifications, onLogout }) {
               <h3>
                 <i className="fa-solid fa-hospital"></i> Healthcare Facilities
               </h3>
-              <a href="#">
+              <button
+                className="card-link"
+                onClick={() => onNavigate("facilities")}
+              >
                 View All <i className="fa-solid fa-arrow-right"></i>
-              </a>
+              </button>
             </div>
 
             <div className="facility-content">
@@ -200,7 +231,10 @@ function Dashboard({ onOpenNotifications, onLogout }) {
                   0788 123 456
                 </p>
 
-                <button className="outline-button">
+                <button
+                  className="outline-button"
+                  onClick={() => onNavigate("facilities")}
+                >
                   View Details <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
@@ -226,7 +260,10 @@ function Dashboard({ onOpenNotifications, onLogout }) {
               <div className="article-info">
                 <h3>Nutrition During Pregnancy</h3>
                 <p>Learn how to eat well for you and your baby.</p>
-                <button className="primary-button">
+                <button
+                  className="primary-button"
+                  onClick={() => onNavigate("learn")}
+                >
                   Read Article <i className="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
