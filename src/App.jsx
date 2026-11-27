@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { Component, createContext, useContext, useEffect, useState } from "react";
 import { Link, Navigate, NavLink, Route, Routes, useLocation, matchPath, useNavigate, useSearchParams } from "react-router-dom";
-import { QueryClient, QueryClientProvider, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, set, update, keys, delMany } from "idb-keyval";
 import { getSession, sessionKey, request, loginUser, registerUser } from "./services/api";
 import journeyPhoto from "./assets/hero.png";
@@ -27,7 +27,7 @@ import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@ui-sdk
 import { Avatar, AvatarFallback } from "@ui-sdk/react/avatar";
 import { Accordion, AccordionHeader, AccordionItem, AccordionPanel, AccordionTrigger } from "@ui-sdk/react/accordion";
 import { OverlayHost } from "@ui-sdk/react/overlays";
-import { toast } from "@ui-sdk/react/toast";
+import { Toast, ToastClose, ToastDescription, ToastTitle, toast } from "@ui-sdk/react/toast";
 import { confirm } from "@ui-sdk/react/alert-dialog";
 import "@fontsource-variable/inter";
 import "@fortawesome/fontawesome-free/css/fontawesome.css";
@@ -114,11 +114,11 @@ function useResource(path, { offline = false, optional = false } = {}) {
   });
 }
 
-function useChange(action, paths = []) {
+function useChange(action, paths = [], errorTitle = "Something went wrong") {
   const { userId } = useContext(account);
   const client = useQueryClient();
   return useMutation({
-    mutationFn: action, networkMode: "always",
+    mutationFn: action, networkMode: "always", meta: { errorTitle },
     onSuccess: () => Promise.all(paths.map(path => client.invalidateQueries({ queryKey: [userId, path] }))),
   });
 }
@@ -411,7 +411,7 @@ const demoEnabled = Boolean(demoCredentials);
 const dayIndex = () => Math.floor(Date.now() / 86400000);
 
 function useDemoLogin(enter) {
-  return useMutation({ mutationFn: () => loginUser(demoCredentials), onSuccess: enter });
+  return useMutation({ mutationFn: () => loginUser(demoCredentials), onSuccess: enter, meta: { inline: true } });
 }
 
 function Landing({ enter }) {
@@ -686,7 +686,7 @@ function Landing({ enter }) {
 function Welcome({ enter, expired }) {
   const [params] = useSearchParams();
   const [register, setRegister] = useState(params.get("mode") === "register");
-  const auth = useMutation({ mutationFn: ({ data, signup }) => signup ? registerUser(data) : loginUser(data), onSuccess: enter });
+  const auth = useMutation({ mutationFn: ({ data, signup }) => signup ? registerUser(data) : loginUser(data), onSuccess: enter, meta: { inline: true } });
   const demo = useDemoLogin(enter);
   const busy = auth.isPending || demo.isPending;
   function submit(e) {
@@ -744,7 +744,7 @@ function Welcome({ enter, expired }) {
 function TimelineForm({ timeline }) {
   const consent = useResource("/consents", { offline: true });
   const [stage, setStage] = useState(timeline?.stage || "FIRST_TRIMESTER");
-  const save = useChange(body => request("/timeline", { method: "PUT", body }), ["/timeline"]);
+  const save = useChange(body => request("/timeline", { method: "PUT", body }), ["/timeline"], "Your timeline was not saved");
   const allowed = granted(consent.data, "DATA_STORAGE");
   return (
     <form id="pregnancy-details" className="card form-card" onSubmit={e => {
@@ -758,7 +758,6 @@ function TimelineForm({ timeline }) {
       <StageSelect value={stage} onChange={setStage} />
       <Field><FieldLabel>Expected due date</FieldLabel><Input name="due" type="date" defaultValue={timeline?.expectedDate || ""} /><FieldDescription>Optional. Used to work out your current week.</FieldDescription></Field>
       {!allowed && <ConsentNotice>Allow data storage to save your timeline.</ConsentNotice>}
-      <Feedback task={save} />
       <div className="form-actions"><Button className="btn btn-primary" type="submit" disabled={save.isPending || !allowed}>Save timeline</Button></div>
     </form>
   );
@@ -941,12 +940,12 @@ function Article({ lesson, record }) {
   const practice = useChange(async result => {
     await update(pendingKey, previous => ({ completed: true, quizPassed: Boolean(previous?.quizPassed || record?.quizPassed || result === quiz.length), score: result }));
     await client.invalidateQueries({ queryKey: [userId, pendingKey] });
-  });
+  }, [], "Your quiz result was not saved on this device");
   const save = useChange(async body => {
     await request("/progress/" + lesson.moduleId, { method: "PUT", body });
     await delMany([pendingKey]);
     await client.invalidateQueries({ queryKey: [userId, pendingKey] });
-  }, ["/progress"]);
+  }, ["/progress"], "Your progress was not saved");
   function check(e) {
     e.preventDefault();
     const result = quiz.filter((q, i) => Number(answers[i]) === q.correctOptionIndex).length;
@@ -1018,7 +1017,6 @@ function Article({ lesson, record }) {
             : <Link className="btn btn-ghost" to="/account">Manage sync consent</Link>}
         </section>
       )}
-      <Feedback task={practice} /><Feedback task={save} />
     </div>
     <aside className="reader-aside">
       <section className="card">
@@ -1375,7 +1373,7 @@ function Records({ diary = false }) {
       toast.success(deleted ? "Visit deleted." : "Visit saved to your account.");
     }
     clearForm();
-  }, [path]);
+  }, [path], ({ deleted }) => `The ${noun} was not ${deleted ? "deleted" : "saved"}`);
   const sync = useChange(async () => {
     if (!syncAllowed) throw new Error("Allow data storage and sync in Account first.");
     for (const draft of (await get(queueKey)) || []) {
@@ -1387,7 +1385,7 @@ function Records({ diary = false }) {
       await client.invalidateQueries({ queryKey: [userId, path] });
     }
     toast.success("Sync complete.", { description: "Your account has the latest accepted entries." });
-  }, [path]);
+  }, [path], "Sync did not finish");
   function submit(e) {
     e.preventDefault();
     const fields = Object.fromEntries(new FormData(e.currentTarget));
@@ -1443,7 +1441,6 @@ function Records({ diary = false }) {
             <Button className="btn btn-secondary" disabled={!online || !syncAllowed || sync.isPending} onClick={() => sync.mutate()}><Icon name="arrows-rotate" />Sync pending changes</Button>
             {!syncAllowed && <Link to="/account">Manage consent</Link>}
           </div>}
-          <Feedback task={sync} />
         </section>
 
         <form key={formVersion + ":" + (editing?.clientId || "new")} className="card form-card record-form" onSubmit={submit}>
@@ -1460,7 +1457,6 @@ function Records({ diary = false }) {
             <Field><FieldLabel>Date and time</FieldLabel><Input type="datetime-local" name="dateTime" required defaultValue={localDateTime(editing?.dateTime)} /></Field>
           </>}
           {!storageAllowed && <ConsentNotice>Allow data storage to save {noun}s.</ConsentNotice>}
-          <Feedback task={change} />
           <div className="form-actions">
             <Button className="btn btn-primary" type="submit" disabled={!storageAllowed || change.isPending}>{diary ? "Save note" : "Save visit"}</Button>
             {editing && <Button className="btn btn-ghost" type="button" onClick={clearForm}>Cancel edit</Button>}
@@ -1507,18 +1503,18 @@ function AccountPage({ signOut }) {
   const save = useChange(async body => {
     await request("/consents", { method: "POST", body });
     if (body.type === "DATA_STORAGE" && !body.granted) await clearAccountCache(user.userId, false);
-  }, ["/consents"]);
+  }, ["/consents"], "Your privacy setting was not changed");
   const remove = useChange(async () => {
     await request("/account", { method: "DELETE" });
     try { await clearAccountCache(user.userId, true); } finally { signOut(); }
-  });
+  }, [], "Your account was not deleted");
   const exportData = useChange(async () => {
     const data = await request("/account/export");
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
     const link = document.createElement("a"); link.href = url; link.download = "maternacare-account.json"; link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     toast.success("Export ready", { description: "maternacare-account.json was downloaded." });
-  });
+  }, [], "Your data could not be exported");
   async function deleteAccount() {
     const yes = await confirm({
       title: "Delete your account permanently?",
@@ -1556,7 +1552,6 @@ function AccountPage({ signOut }) {
               checked={granted(choices, "SYNC")} disabled={save.isPending} onChange={value => save.mutate({ type: "SYNC", granted: value })} />
           </div>
         )}</Result>
-        <Feedback task={save} />
       </section>
 
       <section className="card">
@@ -1565,7 +1560,6 @@ function AccountPage({ signOut }) {
           <div><h2>Your data</h2><p>Download a copy of everything stored in your account.</p></div>
         </header>
         <div className="form-actions"><Button className="btn btn-secondary" disabled={exportData.isPending} onClick={() => exportData.mutate()}><Icon name="download" />Export my data</Button></div>
-        <Feedback task={exportData} />
       </section>
 
       <section className="card danger-card">
@@ -1574,7 +1568,6 @@ function AccountPage({ signOut }) {
           <div><h2>Delete account</h2><p>Permanently deletes your account, visits, diary and learning progress.</p></div>
         </header>
         <div className="form-actions"><Button className="btn btn-danger" disabled={remove.isPending} onClick={deleteAccount}>Delete my account permanently</Button></div>
-        <Feedback task={remove} />
       </section>
     </div>
     <AccountSummary />
@@ -1621,12 +1614,12 @@ function AccountSummary() {
 
 function ReviewEditor({ record }) {
   const client = useQueryClient();
-  const save = useChange(async body => { await request("/review/content", { method: "POST", body }); toast.success("Draft created."); }, ["/review/content"]);
+  const save = useChange(async body => { await request("/review/content", { method: "POST", body }); toast.success("Draft created."); }, ["/review/content"], "The draft was not saved");
   const approve = useChange(async () => {
     await request("/review/content/" + record.id + "/approve", { method: "POST" });
     await client.invalidateQueries();
     toast.success("Version approved.");
-  }, ["/review/content"]);
+  }, ["/review/content"], "The version was not approved");
   return (
     <form className="review-form" onSubmit={e => {
       e.preventDefault(); const form = new FormData(e.currentTarget);
@@ -1634,7 +1627,6 @@ function ReviewEditor({ record }) {
     }}>
       <Field><FieldLabel>Title</FieldLabel><Input name="title" defaultValue={record.title} required maxLength="200" /></Field>
       <Field><FieldLabel>Content</FieldLabel><Textarea name="body" defaultValue={record.body} required maxLength="20000" rows="8" /></Field>
-      <Feedback task={save} /><Feedback task={approve} />
       <div className="form-actions">
         <Button className="btn btn-secondary" type="submit" disabled={save.isPending}>Save as new draft</Button>
         {record.status === "DRAFT" && <Button className="btn btn-primary" type="button" disabled={approve.isPending} onClick={() => approve.mutate()}>Approve saved version</Button>}
@@ -1705,6 +1697,7 @@ function Workspace({ user, signOut }) {
         <main className="container page">
           {!online && <p className="alert alert-info offline-banner"><Icon name="cloud" />You are offline. Showing information saved on this device.</p>}
           {page.path !== "/" && <PageHeader page={page} />}
+          <PageBoundary key={pathname}>
           <Routes>
             <Route path="/" element={<Journey />} />
             <Route path="/learn" element={<Learn />} />
@@ -1715,6 +1708,7 @@ function Workspace({ user, signOut }) {
             {user.role === "REVIEWER" && <Route path="/review" element={<Review />} />}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          </PageBoundary>
           <footer className="site-footer">
             <span><Icon name="circle-info" />MaternaCare provides education only and does not diagnose. In an emergency, contact a health facility right away.</span>
             <span className="credits"><Icon name="camera" />{photoCredits}</span>
@@ -1726,13 +1720,79 @@ function Workspace({ user, signOut }) {
   );
 }
 
+class PageBoundary extends Component {
+  state = { error: null };
+  static getDerivedStateFromError(error) { return { error }; }
+  componentDidCatch(error) { console.error(error); }
+  render() {
+    if (!this.state.error) return this.props.children;
+    return (
+      <section className="card crash-card" role="alert">
+        <span className="empty-icon tone-danger-soft"><Icon name="triangle-exclamation" /></span>
+        <h2>This page ran into a problem</h2>
+        <p>Your saved information is safe. Reload the page, or go back to the home page.</p>
+        <div className="form-actions">
+          <Button className="btn btn-primary" onClick={() => window.location.reload()}><Icon name="rotate-right" />Reload page</Button>
+          <a className="btn btn-secondary" href="/">Go to home</a>
+        </div>
+      </section>
+    );
+  }
+}
+
+const toastIcons = { success: "circle-check", error: "circle-exclamation", warning: "triangle-exclamation", info: "circle-info", loading: "spinner" };
+
+function ToastItem(item) {
+  const type = item.type || "default";
+  return (
+    <Toast className="toast">
+      <span className="toast-icon" data-tone={type}><Icon name={toastIcons[type] || "bell"} className={type === "loading" ? "fa-spin" : ""} /></span>
+      <div className="toast-copy"><ToastTitle className="toast-title" /><ToastDescription className="toast-description" /></div>
+      <ToastClose className="toast-close" aria-label="Dismiss notification"><Icon name="xmark" /></ToastClose>
+    </Toast>
+  );
+}
+
+function notifyError(title, error) {
+  toast.error(title, { description: error?.message || "Please try again.", duration: 8000 });
+}
+
+function createClient() {
+  return new QueryClient({
+    defaultOptions: { queries: { retry: false, staleTime: 15000 }, mutations: { retry: false } },
+    queryCache: new QueryCache({
+      onError: (error, query) => {
+        if (query.state.data === undefined || error.status === 401 || (error.network && !navigator.onLine)) return;
+        toast.error("Could not refresh", { id: "refresh-error", description: error.message, duration: 8000 });
+      },
+    }),
+    mutationCache: new MutationCache({
+      onError: (error, variables, _context, mutation) => {
+        if (mutation.meta?.inline || error.status === 401) return;
+        const title = mutation.meta?.errorTitle;
+        notifyError(typeof title === "function" ? title(variables) : title || "Something went wrong", error);
+      },
+    }),
+  });
+}
+
+function useConnectionNotices() {
+  useEffect(() => {
+    const offline = () => toast.warning("You are offline", { id: "connection", description: "Showing information saved on this device. Changes you allow will sync later.", duration: Infinity });
+    const online = () => toast.success("Back online", { id: "connection", description: "You can sync any changes saved on this device.", duration: 4000 });
+    window.addEventListener("offline", offline); window.addEventListener("online", online);
+    return () => { window.removeEventListener("offline", offline); window.removeEventListener("online", online); };
+  }, []);
+}
+
 export default function App() {
   const [user, setUser] = useState(getSession);
   const [expired, setExpired] = useState(false);
-  const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: 15000 }, mutations: { retry: false } } }));
+  const [client] = useState(createClient);
+  useConnectionNotices();
   const navigate = useNavigate();
   useEffect(() => {
-    const expire = () => { sessionStorage.removeItem(sessionKey); client.clear(); setUser(null); setExpired(true); };
+    const expire = () => { sessionStorage.removeItem(sessionKey); client.clear(); setUser(null); setExpired(true); toast.info("Your session has ended", { id: "session", description: "Sign in again to continue where you left off." }); };
     window.addEventListener("materna-session-expired", expire);
     return () => window.removeEventListener("materna-session-expired", expire);
   }, [client]);
@@ -1751,7 +1811,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       )}
-      <OverlayHost toast={{ side: "top", align: "center" }} />
+      <OverlayHost toast={{ side: "top", align: "center", children: ToastItem }} />
     </QueryClientProvider>
   );
 }

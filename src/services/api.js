@@ -28,15 +28,25 @@ function errorMessage(path, status, data) {
 
 export async function request(path, { method = "GET", body, signal, anonymous = false } = {}) {
   const session = anonymous ? null : getSession();
-  const response = await fetch(base + path, {
-    method, signal, cache: "no-store",
-    headers: {
-      Accept: "application/json",
-      ...(body ? { "Content-Type": "application/json" } : {}),
-      ...(session ? { Authorization: `Bearer ${session.token}` } : {}),
-    },
-    ...(body ? { body: JSON.stringify(body) } : {}),
-  });
+  let response;
+  try {
+    response = await fetch(base + path, {
+      method, signal, cache: "no-store",
+      headers: {
+        Accept: "application/json",
+        ...(body ? { "Content-Type": "application/json" } : {}),
+        ...(session ? { Authorization: `Bearer ${session.token}` } : {}),
+      },
+      ...(body ? { body: JSON.stringify(body) } : {}),
+    });
+  } catch (cause) {
+    if (signal?.aborted || cause?.name === "AbortError") throw cause;
+    const error = new TypeError(navigator.onLine
+      ? "MaternaCare could not reach the server. Check your connection and try again."
+      : "You are offline. Connect to the internet and try again.");
+    error.network = true;
+    throw error;
+  }
   if (!response.ok) {
     const data = await response.json().catch(() => null);
     if (response.status === 401 && session && getSession()?.token === session.token) {
