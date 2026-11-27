@@ -1,0 +1,25 @@
+const files = __FILES__;
+const cacheName = __CACHE_NAME__;
+self.addEventListener("install", event => {
+  event.waitUntil(caches.open(cacheName).then(cache => cache.addAll(files)));
+});
+self.addEventListener("activate", event => {
+  event.waitUntil((async () => {
+    for (const key of await caches.keys()) {
+      if (key.startsWith("maternacare-shell-") && key !== cacheName) await caches.delete(key);
+    }
+    await self.clients.claim();
+  })());
+});
+self.addEventListener("fetch", event => {
+  if (event.request.method !== "GET") return;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
+  if (event.request.mode === "navigate" || files.includes(url.pathname)) {
+    event.respondWith((async () => {
+      const cache = await caches.open(cacheName);
+      const key = event.request.mode === "navigate" ? "/index.html" : url.pathname;
+      return (await cache.match(key)) || fetch(event.request);
+    })());
+  }
+});

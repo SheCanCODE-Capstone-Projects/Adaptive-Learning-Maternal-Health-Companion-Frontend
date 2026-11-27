@@ -1,136 +1,34 @@
+const base = (import.meta.env.VITE_API_BASE_URL || "/api/v1").replace(/\/$/, "");
+export const sessionKey = "maternacare.session";
 
-const API_BASE_URL = "https://mamajourney-api.onrender.com";
-
-// Get the saved authentication token
-function getToken() {
-  return localStorage.getItem("token");
+export function getSession() {
+  try { return JSON.parse(sessionStorage.getItem(sessionKey)); }
+  catch { return null; }
 }
 
-// Common function for sending API requests
-async function apiRequest(endpoint, options = {}) {
-  const token = getToken();
-
-  const headers = {
-    "Content-Type": "application/json",
-    ...options.headers,
-  };
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
+export async function request(path, { method = "GET", body, signal, anonymous = false } = {}) {
+  const session = anonymous ? null : getSession();
+  const response = await fetch(base + path, {
+    method, signal, cache: "no-store",
+    headers: {
+      Accept: "application/json",
+      ...(body ? { "Content-Type": "application/json" } : {}),
+      ...(session ? { Authorization: `Bearer ${session.token}` } : {}),
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
   });
-
-  const responseText = await response.text();
-
-  let data = null;
-
-  if (responseText) {
-    try {
-      data = JSON.parse(responseText);
-    } catch {
-      data = responseText;
-    }
-  }
-
   if (!response.ok) {
-    throw new Error(
-      data?.message || data?.error || `Request failed: ${response.status}`
-    );
+    const data = await response.json().catch(() => null);
+    if (response.status === 401 && session && getSession()?.token === session.token) {
+      window.dispatchEvent(new Event("materna-session-expired"));
+    }
+    const error = new Error(data?.message || data?.detail || data?.error || `Request failed (${response.status})`);
+    error.status = response.status;
+    throw error;
   }
-
-  return data;
+  if (response.status === 204) return null;
+  return response.json();
 }
 
-// Authentication
-export function registerUser(userData) {
-  return apiRequest("/api/v1/auth/register", {
-    method: "POST",
-    body: JSON.stringify(userData),
-  });
-}
-
-export function loginUser(credentials) {
-  return apiRequest("/api/v1/auth/login", {
-    method: "POST",
-    body: JSON.stringify(credentials),
-  });
-}
-
-// Account
-export function deleteAccount() {
-  return apiRequest("/api/v1/account", {
-    method: "DELETE",
-  });
-}
-
-// Appointments
-export function getAppointments() {
-  return apiRequest("/api/v1/appointments");
-}
-
-export function addAppointment(appointmentData) {
-  return apiRequest("/api/v1/appointments", {
-    method: "POST",
-    body: JSON.stringify(appointmentData),
-  });
-}
-
-export function updateAppointment(id, appointmentData) {
-  return apiRequest(`/api/v1/appointments/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(appointmentData),
-  });
-}
-
-export function deleteAppointment(id) {
-  return apiRequest(`/api/v1/appointments/${id}`, {
-    method: "DELETE",
-  });
-}
-
-export function syncAppointments(offlineData) {
-  return apiRequest("/api/v1/appointments/sync", {
-    method: "POST",
-    body: JSON.stringify(offlineData),
-  });
-}
-
-// Consent
-export function getConsents() {
-  return apiRequest("/api/v1/consents");
-}
-
-export function saveConsent(consentData) {
-  return apiRequest("/api/v1/consents", {
-    method: "POST",
-    body: JSON.stringify(consentData),
-  });
-}
-
-// Diary
-export function getDiaryNotes() {
-  return apiRequest("/api/diary/notes");
-}
-
-export function saveDiaryNote(noteData) {
-  return apiRequest("/api/diary/notes", {
-    method: "POST",
-    body: JSON.stringify(noteData),
-  });
-}
-
-// Maternal care timeline
-export function getTimeline() {
-  return apiRequest("/api/v1/timeline");
-}
-
-export function saveTimeline(timelineData) {
-  return apiRequest("/api/v1/timeline", {
-    method: "PUT",
-    body: JSON.stringify(timelineData),
-  });
-}
+export const loginUser = (body) => request("/auth/login", { method: "POST", body, anonymous: true });
+export const registerUser = (body) => request("/auth/register", { method: "POST", body, anonymous: true });

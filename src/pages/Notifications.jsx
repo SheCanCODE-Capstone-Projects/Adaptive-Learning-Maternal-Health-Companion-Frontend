@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./Notifications.css";
 
 function Notifications({ onBack, onUnreadCountChange }) {
@@ -84,7 +84,7 @@ function Notifications({ onBack, onUnreadCountChange }) {
                 }`}
               >
                 <div className="notification-icon">
-                  <i className="fa-regular fa-bell"></i>
+                  <i className="fa-solid fa-bell"></i>
                 </div>
 
                 <div className="notification-content">
@@ -116,14 +116,14 @@ function Notifications({ onBack, onUnreadCountChange }) {
                     onClick={() => deleteNotification(notification.id)}
                     aria-label="Delete notification"
                   >
-                    <i className="fa-regular fa-trash-can"></i>
+                    <i className="fa-solid fa-trash-can"></i>
                   </button>
                 </div>
               </div>
             ))
           ) : (
             <div className="empty-notifications">
-              <i className="fa-regular fa-bell-slash"></i>
+              <i className="fa-solid fa-bell-slash"></i>
 
               <h3>You're all caught up!</h3>
 
