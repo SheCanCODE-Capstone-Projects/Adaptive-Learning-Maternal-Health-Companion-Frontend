@@ -1,18 +1,13 @@
 
-import React from "react";
-import Sidebar from "../components/Sidebar";
+import { NavigationDock } from "../App";
 import heroImg from "../assets/hero.png";
 
 function Dashboard({
-  currentPage,
   onNavigate,
 }) {
   return (
     <div className="dashboard-layout">
-      <Sidebar
-        currentPage={currentPage}
-        onNavigate={onNavigate}
-      />
+      <NavigationDock />
 
       <main className="dashboard-main">
 
@@ -35,7 +30,7 @@ function Dashboard({
           </div>
 
           <div className="next-appointment">
-            <i className="fa-regular fa-calendar-days"></i>
+            <i className="fa-solid fa-calendar-days"></i>
             <div>
               <p>Next Appointment</p>
               <h3>Dec 5, 2026</h3>
@@ -79,8 +74,8 @@ function Dashboard({
               <div className="lesson-list">
                 <p><i className="fa-solid fa-circle-check completed"></i> Nutrition in Pregnancy</p>
                 <p><i className="fa-solid fa-circle-check completed"></i> Danger Signs</p>
-                <p><i className="fa-regular fa-circle circle-empty"></i> Birth Preparation</p>
-                <p><i className="fa-regular fa-circle circle-empty"></i> Postpartum Care</p>
+                <p><i className="fa-solid fa-circle circle-empty"></i> Birth Preparation</p>
+                <p><i className="fa-solid fa-circle circle-empty"></i> Postpartum Care</p>
               </div>
             </div>
           </article>
@@ -89,7 +84,7 @@ function Dashboard({
           <article className="dashboard-card appointments-card">
             <div className="card-heading">
               <h3>
-                <i className="fa-regular fa-calendar-days"></i> Upcoming Appointments
+                <i className="fa-solid fa-calendar-days"></i> Upcoming Appointments
               </h3>
               <button
                 className="card-link"
@@ -109,7 +104,7 @@ function Dashboard({
                 <h3>Prenatal Checkup</h3>
                 <p>Kigali Health Center</p>
                 <span>
-                  <i className="fa-regular fa-clock"></i> 9:00 AM
+                  <i className="fa-solid fa-clock"></i> 9:00 AM
                 </span>
               </div>
             </div>
@@ -177,7 +172,7 @@ function Dashboard({
             </div>
 
             <div className="diary-note">
-              <p>Today, I feel well. Baby is moving a lot! ❤️</p>
+              <p>Today, I feel well. Baby is moving a lot!</p>
               <div>
                 <span>Nov 20, 2026 · Private</span>
                 <i className="fa-solid fa-pen-to-square"></i>

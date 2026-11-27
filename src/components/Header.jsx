@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 function Header({ onOpenNotifications, onLogout, unreadCount }) {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
@@ -12,7 +12,7 @@ function Header({ onOpenNotifications, onLogout, unreadCount }) {
     <>
       <header className="top-header">
         <div className="welcome-message">
-          <h1>Hello, Mama! 👋</h1>
+          <h1>Hello, Mama!</h1>
           <p>You're doing great on your maternal health journey!</p>
         </div>
 
@@ -22,7 +22,7 @@ function Header({ onOpenNotifications, onLogout, unreadCount }) {
             aria-label={`Notifications, ${unreadCount} unread`}
             onClick={onOpenNotifications}
           >
-            <i className="fa-regular fa-bell"></i>
+            <i className="fa-solid fa-bell"></i>
 
             {unreadCount > 0 && (
               <span className="notification-count">
