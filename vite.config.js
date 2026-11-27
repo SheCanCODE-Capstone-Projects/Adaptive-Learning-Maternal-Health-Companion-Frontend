@@ -1,22 +1,25 @@
+import process from "node:process"
 import { readFileSync } from "node:fs"
 import { createHash } from "node:crypto"
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import { defineConfig } from 'vite'
 
+const apiTarget = process.env.API_PROXY_TARGET || "http://localhost:8080"
+
 // https://vite.dev/config/
 export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8080",
+        target: apiTarget,
         changeOrigin: true,
         configure(proxy) {
           proxy.on("proxyReq", (outgoing, incoming) => {
             // Forward same-origin browser requests using the upstream origin.
             const origin = incoming.headers.origin
             if (origin === "http://" + incoming.headers.host || origin === "https://" + incoming.headers.host) {
-              outgoing.setHeader("Origin", "http://localhost:8080")
+              outgoing.setHeader("Origin", new URL(apiTarget).origin)
             }
           })
         }

@@ -6,6 +6,26 @@ export function getSession() {
   catch { return null; }
 }
 
+const genericReasons = new Set(["Bad Request", "Unauthorized", "Forbidden", "Not Found", "Conflict", "Internal Server Error"]);
+
+function errorMessage(path, status, data) {
+  const candidates = [data?.message, data?.detail, data?.error?.message, data?.error, data?.errors?.[0]?.defaultMessage, data?.errors?.[0]?.message];
+  const specific = candidates.find(value => typeof value === "string" && value.trim() && !genericReasons.has(value.trim()));
+  if (specific) return specific;
+  if (path.startsWith("/auth/register")) {
+    if (status === 409) return "An account with this email already exists. Sign in instead.";
+    if (status === 400) return "Check your details: enter your full name, a valid email and a password of at least 8 characters.";
+  }
+  if (path.startsWith("/auth/login") && (status === 401 || status === 400)) return "The email or password is not correct.";
+  if (status === 401) return "Your session has ended. Sign in again.";
+  if (status === 403) return "You do not have permission to do that.";
+  if (status === 404) return "The service could not be reached. Please try again later.";
+  if (status === 409) return "This change conflicts with newer information. Refresh and try again.";
+  if (status === 429) return "Too many attempts. Wait a moment and try again.";
+  if (status >= 500) return "The server had a problem. Please try again in a few minutes.";
+  return `Something went wrong (${status}). Please try again.`;
+}
+
 export async function request(path, { method = "GET", body, signal, anonymous = false } = {}) {
   const session = anonymous ? null : getSession();
   const response = await fetch(base + path, {
@@ -22,7 +42,7 @@ export async function request(path, { method = "GET", body, signal, anonymous = 
     if (response.status === 401 && session && getSession()?.token === session.token) {
       window.dispatchEvent(new Event("materna-session-expired"));
     }
-    const error = new Error(data?.message || data?.detail || data?.error || `Request failed (${response.status})`);
+    const error = new Error(errorMessage(path, response.status, data));
     error.status = response.status;
     throw error;
   }
