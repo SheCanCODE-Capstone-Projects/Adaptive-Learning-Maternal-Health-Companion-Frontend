@@ -1,56 +1,51 @@
 
-import React from "react";
+import { NavLink } from "react-router-dom";
 
-const navigation = [
-  { label: "Dashboard", icon: "fa-house", page: "dashboard" },
-  { label: "My Journey", icon: "fa-graduation-cap", page: "my-journey" },
-  { label: "Appointments", icon: "fa-calendar-days", page: "appointments" },
-  { label: "My Diary", icon: "fa-book-open", page: "diary" },
-  { label: "Learn", icon: "fa-book-medical", page: "learn" },
-  { label: "Facilities", icon: "fa-hospital", page: "facilities" },
-  { label: "Progress", icon: "fa-chart-simple", page: "progress" },
-  { label: "Content Review", icon: "fa-shield-heart", page: "content-review" },
-];
-
-function Sidebar({ currentPage, onNavigate }) {
+function Sidebar() {
   return (
     <aside className="sidebar">
-      <div className="brand">
-        <div className="brand-icon">
-          <i className="fa-solid fa-heart-pulse"></i>
+      <div className="sidebar-brand">
+        <div className="brand-icon">♡</div>
+        <div>
+          <h2>MaternaCare</h2>
+          <p className="sidebar-label">Maternal Health Companion</p>
         </div>
-
-        <h2>
-          Maternal Health
-          <br />
-          Companion
-        </h2>
-
-        <p>Learn · Plan · Thrive</p>
       </div>
 
       <nav className="sidebar-nav">
-        {navigation.map((item) => (
-          <button
-            type="button"
-            key={item.label}
-            className={`nav-link ${
-              currentPage === item.page ? "active" : ""
-            }`}
-            onClick={() => onNavigate(item.page)}
-          >
-            <i className={`fa-solid ${item.icon}`}></i>
-            <span>{item.label}</span>
-          </button>
-        ))}
+        <p className="sidebar-label">MAIN MENU</p>
+
+        <NavLink to="/" end className={({ isActive }) =>
+          isActive ? "nav-link active" : "nav-link"
+        }>
+          <span>⌂</span>
+          <span>My Journey</span>
+        </NavLink>
+
+        <NavLink to="/appointments" className={({ isActive }) =>
+          isActive ? "nav-link active" : "nav-link"
+        }>
+          <span>▣</span>
+          <span>Appointments</span>
+        </NavLink>
+
+        <NavLink to="/diary" className={({ isActive }) =>
+          isActive ? "nav-link active" : "nav-link"
+        }>
+          <span>✎</span>
+          <span>My Diary</span>
+        </NavLink>
       </nav>
 
-      <div className="sidebar-message">
-        <i className="fa-solid fa-heart"></i>
-        <p>
-          Healthy Mum,
-          <br />
-          Healthy Baby <span>♥</span>
+      <div className="sidebar-bottom">
+        <div className="sidebar-help">
+          <span>♡</span>
+          <h4>We're here for you</h4>
+          <p>Your journey matters. Take care of yourself and your baby.</p>
+        </div>
+
+        <p className="sidebar-footer">
+          © 2026 MaternaCare
         </p>
       </div>
     </aside>
